@@ -109,3 +109,30 @@ INNER JOIN staff
 ON staff.id = assignments.employee_id
 GROUP BY staff.name;
 
+-- number of different keepers who have been assigned to work in a given enclosure
+SELECT enclosures.name AS enclosure_name,
+COUNT(DISTINCT staff.id) AS employee_count
+FROM staff
+INNER JOIN assignments
+ON staff.id = assignments.employee_id
+INNER JOIN enclosures
+ON enclosure_id = enclosures.id
+GROUP BY enclosures.name;
+
+-- names of the other animals sharing an enclosure with Tony
+SELECT animals.name AS animal_name,
+enclosures.name AS enclosure_name
+FROM animals
+INNER JOIN enclosures
+ON enclosures.id = animals.enclosure_id
+WHERE enclosures.id = (SELECT enclosure_id FROM animals WHERE name = 'Tony')
+AND NOT animals.name = 'Tony';
+
+-- names of the other animals sharing an enclosure with Boots
+SELECT animals.name AS animal_name,
+enclosures.name AS enclosure_name
+FROM animals
+INNER JOIN enclosures
+ON enclosures.id = animals.enclosure_id
+WHERE enclosures.id = (SELECT enclosure_id FROM animals WHERE name = 'Boots')
+AND NOT animals.name = 'Boots';
