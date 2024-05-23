@@ -1,7 +1,8 @@
-DROP TABLE IF EXISTS staff;
 DROP TABLE IF EXISTS assignments;
 DROP TABLE IF EXISTS animals;
 DROP TABLE IF EXISTS enclosures;
+DROP TABLE staff;
+
 
 CREATE TABLE staff(
     id SERIAL PRIMARY KEY,
@@ -56,7 +57,16 @@ INSERT INTO assignments (day, employee_id, enclosure_id) VALUES ('Wednesday', 2,
 INSERT INTO assignments (day, employee_id, enclosure_id) VALUES ('Thursday', 2, 1);
 INSERT INTO assignments (day, employee_id, enclosure_id) VALUES ('Friday', 2, 2);
 
-SELECT * FROM animals;
-SELECT * FROM staff;
-SELECT * FROM enclosures;
-SELECT * FROM assignments;
+-- names of animals in given enclosures
+SELECT name FROM animals WHERE enclosure_id = 1;
+SELECT name FROM animals WHERE enclosure_id = 2;
+
+-- names of staff in given enclosures on a given day
+SELECT staff.name AS employee_name, 
+enclosures.name AS enclosure_name, assignments.day FROM staff
+INNER JOIN assignments
+ON staff.id = assignments.employee_id
+INNER JOIN enclosures
+ON enclosure_id = enclosures.id
+ORDER BY staff.name, assignments.id;
+
